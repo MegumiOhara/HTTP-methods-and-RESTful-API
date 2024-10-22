@@ -1,9 +1,27 @@
 import express from "express";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 
 const app = express();
 app.use(express.json());
 
 const PORT = 3000;
+
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.0",
+        info:{
+            title:"Users API",
+            version:"1.0.0",
+            description: "A simple Express Users API"
+        },
+    },
+    apis:["./server.js"],
+};
+
+const swaggerDocs = swaggerJSDoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.listen(PORT, () =>{
     console.log(`server is running in http://localhost:${PORT}`);
