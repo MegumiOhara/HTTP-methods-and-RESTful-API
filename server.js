@@ -40,17 +40,77 @@ let users = [
     },
     {
         id:3,
-        name: "Cristiano Ronalso",
+        name: "Cristiano Ronaldo",
         nationality: "Portugese"
     }
 ];
 
 //Get all the books 
+
+/**
+ * @swagger
+ * /users:
+ *  get:
+ *    summary: Retrieve a list of all users
+ *    description: Retrieve a list of users in the library.
+ *    responses:
+ *      200:
+ *        description: A list of users.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                     type: integer
+ *                  name:
+ *                     type: string
+ *                  nationality:
+ *                     type: string
+ */
 app.get('/users', (req,res) => {
     res.json(users);
 });
 
 //POST- add a user
+
+/**
+ * @swagger
+ * /users:
+ *  post:
+ *    summary: Add a new user
+ *    requestBody:
+ *      require: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - name
+ *              - nationality
+ *            properties:
+ *              name:
+ *                type: string
+ *              nationality:
+ *                type: string
+ *    responses:
+ *      200:
+ *        description: User added successfully.
+ *        content:
+ *          application/json:
+ *            schema:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                     type: integer
+ *                  name:
+ *                     type: string
+ *                  nationality:
+ *                     type: string
+ */
+
 app.post('/users', (req,res) => {
     const newUser = {
         id: users.length+1, 
@@ -63,6 +123,53 @@ app.post('/users', (req,res) => {
 });
 
 //PUT- update user information 
+
+/**
+ * @swagger
+ * /users/{id}:
+ *  put:
+ *    summary: Update an existing user
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: integer
+ *        required: true
+ *        description: Numeric ID of the user to update
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              name:
+ *                type: string
+ *              nationality:
+ *                type: string
+ *    responses:
+ *      200:
+ *        description: User updated successfully.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                user:
+ *                  type: object
+ *                  properties:
+ *                    id:
+ *                      type: integer
+ *                    name:
+ *                      type: string
+ *                    nationality:
+ *                      type: string
+ *      404:
+ *        description: User not found.
+ */
+
 app.put('/users/:id', (req,res) => {
     const userId = parseInt(req.params.id);
     const user = users.find((u) => u.id === userId);
@@ -75,6 +182,33 @@ app.put('/users/:id', (req,res) => {
 });
 
 //DELETE - delete user
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete a user
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Numeric ID of the users to delete
+ *     responses:
+ *       200:
+ *         description: User deleted successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Book not found.
+ */
+
 app.delete('/users/:id', (req,res) => {
     const userId = parseInt(req.params.id);
     users = users.filter((u) => u.id !== userId);
