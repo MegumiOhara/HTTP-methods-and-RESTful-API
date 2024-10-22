@@ -206,7 +206,7 @@ app.put('/users/:id', (req,res) => {
  *                 message:
  *                   type: string
  *       404:
- *         description: Book not found.
+ *         description: User not found.
  */
 
 app.delete('/users/:id', (req,res) => {
